@@ -1,0 +1,100 @@
+@extends('master')
+@section('titletab','Data Proses')
+
+@section('content')  
+<div class="container-fluid px-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="class-title">Data transaksi masuk</h3>
+        </div>
+        <div class="card-body">
+          <div class="box">           
+            <div class="box-body table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>No Hp</th>
+                  <th>Qty</th>
+                  <th>Jenis Laundry</th>
+                  <th>Tanggal</th>
+                  <th>Status laundry</th>
+                  <th>Status Pembayaran</th>
+                  <th>Aksi</th>
+                </thead>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>
+<div class="container-fluid text-center">
+  <a href="/" class="btn btn-outline-warning btn-back shadow"><b>Kembali</b></a>
+</div>
+@endsection
+
+@push('script')
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  @if(Session::has('sukses_input'))
+  <script>
+      swal("Sukses!", "{{Session::get('sukses_input')}}", "success", {
+        button: "Ok",
+      });
+    </script>
+  @elseif(Session::has('transaction_failed'))
+  <script>
+      swal("Gagal!", "{{Session::get('transaction_failed')}}", "error", {
+        button: "Ok",
+      });
+    </script>
+  @elseif(Session::has('transaction_success'))
+  <script>
+      swal("Sukses!", "{{Session::get('transaction_success')}}", "success", {
+        button: "Ok",
+      });
+    </script>
+  @elseif(Session::has('update_success'))
+  <script>
+      swal("Sukses!", "{{Session::get('update_success')}}", "success", {
+        button: "Ok",
+      });
+    </script>
+  @elseif(Session::has('delete_success'))
+  <script>
+      swal("Sukses!", "{{Session::get('delete_success')}}", "success", {
+        button: "Ok",
+      });
+    </script>
+  @endif
+
+  <!-- dataTable Section -->
+  <script>
+    let table;
+
+    $(function () {
+      table = $('.table').DataTable({
+        processing: true,
+        autoWidth: false, 
+        ajax: {
+          url: '/list-data-transaksi/masuk/jsonDataMasuk',
+        },
+        columns: [
+          {data: 'DT_RowIndex', searchable: false, sortable: false},
+          {data: 'nama'},
+          {data: 'nohp'},
+          {data: 'qty'},
+          {data: 'jenis'},
+          {data: 'tanggal'},
+          {data: 'status'},
+          {data: 'status_pembayaran'},
+          {data: 'aksi', searchable: false, sortable: false}
+        ]
+      });
+    });
+  </script>
+@endpush
